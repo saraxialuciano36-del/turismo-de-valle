@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turismo Región de los Valles | Jujuy</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
+        .hero-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-600/30"><i class="fa-solid fa-mountain-sun text-xl"></i></div>
+                <div><span class="text-xl font-bold bg-gradient-to-r from-emerald-700 to-teal-600 bg-clip-text text-transparent">Valles de Jujuy</span><span class="block text-xs text-slate-500 font-medium">Proyecto Escolar y Turístico</span></div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-600">
+                <a href="#investigacion" class="hover:text-emerald-600 transition">1. Investigación</a>
+                <a href="#paquete" class="hover:text-emerald-600 transition">2. Paquete / Dossier</a>
+                <a href="#rutas" class="hover:text-emerald-600 transition">3. Rutas y Accesos</a>
+                <a href="#juegos" class="hover:text-emerald-600 transition">5. Juegos & Bailes</a>
+                <a href="#qr" class="bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-md hover:bg-emerald-700 transition">Código QR</a>
+            </nav>
+        </div>
+    </header>
+    <section class="hero-bg text-white py-28 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <span class="inline-flex items-center space-x-2 bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 px-4 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm"><i class="fa-solid fa-location-dot"></i> <span>Región de los Valles • Jujuy, Argentina</span></span>
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight">Investigación y Turismo en los Valles</h1>
+            <p class="text-lg sm:text-xl text-slate-200 max-w-2xl mx-auto font-light">Sitio web interactivo desarrollado con toda la información de la región, festividades, áreas protegidas y propuesta de agencia de viajes.</p>
+        </div>
+    </section>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+        <section id="investigacion" class="space-y-12">
+            <div class="text-center space-y-3"><span class="text-emerald-600 font-semibold text-sm tracking-wider uppercase">Punto 1 y 2 de la Carpeta</span><h2 class="text-3xl sm:text-4xl font-bold text-slate-900">Investigación y Atractivos Seleccionados</h2><p class="text-slate-500 max-w-xl mx-auto">Tocá cada atractivo para entrar y ver toda la información, fotos y videos de YouTube.</p></div>
+            <div id="atractivosGrid" class="grid sm:grid-cols-2 gap-6"></div>
+        </section>
+        <div id="detalle" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true" aria-labelledby="detTitle">
+            <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-sm" onclick="cerrarDetalle()"></div>
+            <div class="relative h-full w-full sm:h-auto sm:max-h-[92vh] sm:max-w-3xl sm:mx-auto sm:mt-[4vh] bg-white sm:rounded-3xl shadow-2xl overflow-y-auto">
+                <div class="relative h-56 sm:h-72 bg-slate-200">
+                    <img id="detImg" src="" alt="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                    <button onclick="cerrarDetalle()" class="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-slate-800 flex items-center justify-center shadow-lg" aria-label="Cerrar"><i class="fa-solid fa-xmark text-xl"></i></button>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white space-y-2">
+                        <span id="detTag" class="inline-block bg-emerald-500/90 text-xs font-semibold px-3 py-1 rounded-lg"></span>
+                        <h3 id="detTitle" class="text-2xl sm:text-3xl font-bold leading-tight"></h3>
+                    </div>
+                </div>
+                <div class="p-6 sm:p-8 space-y-6">
+                    <div id="detText" class="space-y-3 text-slate-600 text-sm sm:text-base leading-relaxed"></div>
+                    <ul id="detFacts" class="space-y-2 text-sm text-slate-600 bg-slate-50 rounded-2xl p-4"></ul>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2 text-red-600"><i class="fa-brands fa-youtube text-2xl"></i><h4 class="text-lg font-bold text-slate-800">Videos para ver</h4></div>
+                        <div id="detVideos" class="grid sm:grid-cols-2 gap-4"></div>
+                    </div>
+                    <div id="detLinks" class="grid sm:grid-cols-2 gap-3 pt-2"></div>
+                </div>
+            </div>
+        </div>
+        <section id="paquete" class="space-y-12">
+            <div class="text-center space-y-3"><span class="text-emerald-600 font-semibold text-sm tracking-wider uppercase">Puntos 2 y 3 de la Carpeta</span><h2 class="text-3xl sm:text-4xl font-bold text-slate-900">Agencia de Viajes y Rutas de Acceso</h2><p class="text-slate-500 max-w-xl mx-auto">Folleto, dossier de servicios y mapa de rutas hacia los destinos seleccionados.</p></div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 space-y-6"><div class="flex items-center space-x-3 text-emerald-600"><i class="fa-solid fa-book-open text-2xl"></i><h3 class="text-xl font-bold text-slate-800">Dossier Turístico / Folleto</h3></div><ul class="space-y-3 text-sm text-slate-600"><li class="flex items-start space-x-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i><span><strong>Destino:</strong> Región de los Valles (Palpalá, Río Blanco, Serranías del Zapla).</span></li><li class="flex items-start space-x-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i><span><strong>Actividades:</strong> Trekking ecológico, turismo religioso y cultural.</span></li><li class="flex items-start space-x-2"><i class="fa-solid fa-check text-emerald-600 mt-1"></i><span><strong>Alojamiento:</strong> Cabañas y posadas serranas preparadas para visitantes.</span></li></ul><button onclick="downloadBrochure()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 rounded-xl transition">Ver Folleto con QR (PDF)</button></div>
+                <div id="rutas" class="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 space-y-6"><div class="flex items-center space-x-3 text-emerald-600"><i class="fa-solid fa-route text-2xl"></i><h3 class="text-xl font-bold text-slate-800">Rutas y Accesos</h3></div><ul class="space-y-3 text-sm text-slate-600"><li class="flex items-start space-x-2"><i class="fa-solid fa-location-arrow text-emerald-600 mt-1"></i><span><strong>Ruta Nacional 9:</strong> Conecta San Salvador de Jujuy directamente con la zona de los valles.</span></li><li class="flex items-start space-x-2"><i class="fa-solid fa-location-arrow text-emerald-600 mt-1"></i><span><strong>Acceso a Zapla:</strong> Camino pavimentado desde Palpalá hacia los puestos de la reserva.</span></li></ul><a href="https://maps.google.com/?q=Serranias+de+Zapla+Palpala+Jujuy" target="_blank" rel="noopener" class="block text-center bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-medium py-3 rounded-xl transition">Ver Rutas en Google Maps</a></div>
+            </div>
+        </section>
+        <section id="juegos" class="bg-emerald-900 text-white rounded-3xl p-8 sm:p-12 shadow-2xl space-y-8"><div class="max-w-2xl space-y-3"><span class="text-emerald-400 font-semibold text-sm tracking-wider uppercase">Punto 5 de la Carpeta</span><h2 class="text-3xl sm:text-4xl font-bold">Juegos Interactivos, Festividades y Bailes Típicos</h2><p class="text-emerald-100/80">Recreación de las festividades y bailes tradicionales (como el carnavalito y las cuecas norteñas) a través de una trivia interactiva.</p></div>
+            <div class="bg-white text-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl max-w-2xl mx-auto space-y-6"><div id="questionBox" class="space-y-4"><span id="qNumber" class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-100 px-3 py-1 rounded-full">Pregunta 1 de 7</span><h3 id="qTitle" class="text-xl font-bold text-slate-800"></h3><div id="optionsList" class="space-y-3"></div></div><div id="quizResult" class="hidden text-center space-y-4"><div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto"><i class="fa-solid fa-award"></i></div><h3 class="text-2xl font-bold text-slate-800">¡Trivia terminada!</h3><p id="scoreText" class="text-slate-600 text-sm"></p><button onclick="resetQuiz()" class="bg-emerald-600 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:bg-emerald-700 transition">Reiniciar Juego</button></div></div>
+        </section>
+        <section id="qr" class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl p-8 sm:p-12 border border-emerald-100 flex flex-col md:flex-row items-center justify-between gap-8"><div class="space-y-4 max-w-xl"><span class="text-emerald-700 font-semibold text-sm tracking-wider uppercase">Punto 4 de la Carpeta</span><h2 class="text-3xl font-bold text-slate-900">Creación de Página Web y Código QR</h2><p class="text-slate-600 text-sm leading-relaxed">Este código QR permite compartir la página publicada desde cualquier teléfono celular.</p></div><div class="bg-white p-6 rounded-3xl shadow-xl border border-emerald-100 flex flex-col items-center space-y-3"><div id="qrcode" class="p-2 bg-white rounded-2xl"></div><span class="text-xs font-semibold text-slate-400">Escanea para abrir la web</span></div></section>
+    </main>
+    <footer class="bg-slate-900 text-white py-12 border-t border-slate-800 text-center"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2"><p class="font-bold text-lg">Región de los Valles • Jujuy</p><p class="text-sm text-slate-400">Trabajo Práctico Escolar Integrado (Investigación, Dossier, Rutas, Página Web, QR y Juegos).</p></div></footer>
+    <script>
+    const questions = [
+      {q:"¿Qué festividad religiosa se celebra masivamente en octubre en la región de los valles?",options:["A) Toreo de la Vincha","B) Fiesta de la Virgen de Río Blanco y Paypaya","C) Eponimía de la Pachamama"],correct:1},
+      {q:"¿Qué área protegida se destaca por su yungas e historia minera en Palpalá?",options:["A) Reserva Ecológica Serranías del Zapla","B) Parque Nacional Calilegua","C) Salinas Grandes"],correct:0},
+      {q:"¿Qué expresiones artísticas tradicionales acompañan las festividades de la región?",options:["A) Tango y Milonga","B) Carnavalito y Cuecas norteñas","C) Chamamé y Gato"],correct:1},
+      {q:"¿Qué ruta nacional conecta San Salvador de Jujuy con la zona de los valles?",options:["A) Ruta Nacional 40","B) Ruta Nacional 9","C) Ruta Nacional 52"],correct:1},
+      {q:"¿Qué ritual andino se celebra en agosto para agradecer a la Madre Tierra?",options:["A) La Pachamama","B) El Inti Raymi","C) La Fiesta de la Vendimia"],correct:0},
+      {q:"¿Qué instrumento es típico en la música del carnavalito?",options:["A) Bandoneón","B) Guitarra eléctrica","C) Quena y charango"],correct:2},
+      {q:"¿Qué actividad turística se practica en las Serranías del Zapla?",options:["A) Esquí","B) Trekking ecológico","C) Surf"],correct:1}
+    ];
+    let currentQuestion=0,score=0;
+    function loadQuestion(){const q=questions[currentQuestion];document.getElementById('qNumber').textContent=`Pregunta ${currentQuestion+1} de ${questions.length}`;document.getElementById('qTitle').textContent=q.q;const list=document.getElementById('optionsList');list.innerHTML='';q.options.forEach((opt,index)=>{const b=document.createElement('button');b.className='w-full text-left bg-slate-50 hover:bg-emerald-50 border border-slate-200 p-4 rounded-xl text-sm font-medium transition';b.textContent=opt;b.onclick=()=>checkAnswer(index);list.appendChild(b);});}
+    function checkAnswer(selected){if(selected===questions[currentQuestion].correct)score++;currentQuestion++;if(currentQuestion<questions.length)loadQuestion();else showResults();}
+    function showResults(){document.getElementById('questionBox').classList.add('hidden');document.getElementById('quizResult').classList.remove('hidden');document.getElementById('scoreText').textContent=`Respondiste correctamente ${score} de ${questions.length} preguntas.`;}
+    function resetQuiz(){currentQuestion=0;score=0;document.getElementById('quizResult').classList.add('hidden');document.getElementById('questionBox').classList.remove('hidden');loadQuestion();}
+    const atractivos = [
+      {tag:"Atractivo & Festividad",color:"emerald",icon:"fa-church",title:"Fiesta de la Virgen de Río Blanco y Paypaya",
+       resumen:"La gran peregrinación de octubre a la patrona de Jujuy.",
+       text:["Celebración religiosa central de la región de los valles. Cada mes de octubre convoca a miles de fieles peregrinos que caminan hacia el santuario en un acto de profunda devoción y encuentro comunitario.","La Virgen de Río Blanco y Paypaya es la patrona de la provincia de Jujuy. Su peregrinación es una de las manifestaciones de fe más grandes del norte argentino: familias enteras, grupos de promesantes, bandas de sikuris y agrupaciones de caporales y tinkus acompañan a la imagen durante el recorrido, que se vive con música, cantos y mucha emoción."],
+       facts:[["fa-calendar-days","Cuándo","los domingos de octubre (consultar las fechas de cada año)."],["fa-location-dot","Dónde","Santuario de Río Blanco, entre San Salvador de Jujuy y Palpalá."],["fa-person-walking","Qué hacer","sumarse a la caminata, visitar el santuario y disfrutar de la música y las danzas devocionales."],["fa-lightbulb","Consejo","llevar calzado cómodo, agua, protector solar y abrigo para la noche."]],
+       videos:[["J3af-ua4oHU","2° domingo de peregrinación al Santuario Río Blanco"],["-_Rsd7m3beY","La Virgen llega al templo de Río Blanco"],["4C8t6cayWRE","Peregrinación de la Virgen de Río Blanco y Paypaya"],["BcsYqGJtUI0","Día de la Virgen de Río Blanco"]],
+       info:"https://www.google.com/search?q=Fiesta+Virgen+de+R%C3%ADo+Blanco+y+Paypaya+Jujuy",
+       mapa:"https://maps.google.com/?q=Santuario+Virgen+de+Rio+Blanco+y+Paypaya+Jujuy"},
+      {tag:"Área Protegida",color:"teal",icon:"fa-tree",title:"Reserva Ecológica Serranías del Zapla",
+       resumen:"Yungas, aves, miradores e historia minera junto a Palpalá.",
+       text:["Importante área natural protegida caracterizada por su ecosistema de Yungas, bosques nativos, rica avifauna y su valioso legado histórico minero en las cercanías de Palpalá.","En sus cerros se extraía el mineral de hierro que abastecía a Altos Hornos Zapla, el primer establecimiento siderúrgico del país, impulsado por el General Manuel Savio. Hoy la reserva combina naturaleza e historia: senderos entre la selva de montaña, miradores con vista a los valles, arroyos, cascadas como el Chorro del Ucumar y antiguos pueblos mineros."],
+       facts:[["fa-tree","Naturaleza","selva de Yungas, bosques nativos y gran variedad de aves."],["fa-person-hiking","Actividades","trekking, observación de aves, fotografía, ciclismo y picnic."],["fa-hammer","Historia","recorrido por el patrimonio minero y siderúrgico de Palpalá."],["fa-lightbulb","Consejo","ir con guía local, respetar los senderos y no dejar residuos."]],
+       videos:[["_s2leANRzOc","Serranías de Zapla desde el cielo"],["vE5vxr9OB44","Turisteando por Palpalá y las Serranías de Zapla"],["-CkXQRVVsCQ","Chorro del Ucumar"],["fhV7XrnFmTc","Zapla: historia"]],
+       info:"https://www.google.com/search?q=Reserva+Ecol%C3%B3gica+Serran%C3%ADas+de+Zapla+Palpal%C3%A1",
+       mapa:"https://maps.google.com/?q=Serranias+de+Zapla+Palpala+Jujuy"},
+      {tag:"Ciudad",color:"sky",icon:"fa-city",title:"Palpalá, la Ciudad del Acero",
+       resumen:"Puerta de entrada a los valles, con historia siderúrgica.",
+       text:["Palpalá está a pocos kilómetros de San Salvador de Jujuy y es conocida como la \"Ciudad del Acero\" por Altos Hornos Zapla, que marcó su crecimiento durante el siglo XX.","Es el punto de partida ideal para recorrer la Región de los Valles: desde aquí se accede al Santuario de Río Blanco y a las Serranías del Zapla. Ofrece paseos, gastronomía regional y espacios verdes junto al río."],
+       facts:[["fa-road","Acceso","por Ruta Nacional 66 desde San Salvador de Jujuy (unos 15 km)."],["fa-industry","Historia","Altos Hornos Zapla y el legado del General Savio."],["fa-utensils","Gastronomía","empanadas, humitas, tamales y locro."]],
+       videos:[["0ZPOEFJQQww","Palpalá, Jujuy – conociendo Argentina"],["jksbwQVO74k","Cocinamos sobre piedra en Palpalá"],["5gAhHbx56h0","Palpalá: la ciudad más infravalorada de Jujuy"],["0pcOVsPjYEM","Turismo en Jujuy"]],
+       info:"https://www.google.com/search?q=Palpal%C3%A1+Jujuy+turismo",
+       mapa:"https://maps.google.com/?q=Palpala+Jujuy"},
+      {tag:"Bailes Típicos",color:"amber",icon:"fa-music",title:"Carnavalito y Cuecas Norteñas",
+       resumen:"La música y las danzas que acompañan cada fiesta.",
+       text:["El carnavalito es una danza alegre de origen andino que se baila en ronda o en filas, con pasos saltados, al ritmo de quenas, sikus, charangos y bombos. Es el baile por excelencia del carnaval jujeño.","La cueca norteña es una danza de pareja, más pausada y elegante, en la que se usa el pañuelo para el galanteo. Ambas expresiones están presentes en las festividades de la Región de los Valles."],
+       facts:[["fa-drum","Instrumentos","quena, siku, charango, caja y bombo."],["fa-people-group","Cómo se baila","carnavalito en ronda o filas; cueca en pareja con pañuelo."],["fa-calendar-days","Cuándo verlos","en el carnaval, festivales y fiestas patronales."]],
+       videos:[["nMr9V_1CGn4","El Humahuaqueño – carnavalito (Los Nocheros)"],["MHK99_j6weU","Carnavalito \"El Humahuaqueño\""],["TxkvHsiNRr0","Báilate una cueca norteña"],["Gjd2nAxf1Qw","Final cueca coya – pareja tradicional"]],
+       info:"https://www.google.com/search?q=carnavalito+y+cueca+norte%C3%B1a+Jujuy",
+       mapa:"https://maps.google.com/?q=Jujuy+Argentina"}
+    ];
+    const tagColors={emerald:"bg-emerald-500/90",teal:"bg-teal-500/90",sky:"bg-sky-500/90",amber:"bg-amber-500/90"};
+    const iconColors={emerald:"text-emerald-600",teal:"text-teal-600",sky:"text-sky-600",amber:"text-amber-600"};
+    const thumb=id=>`https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+    const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    function renderAtractivos(){
+      document.getElementById('atractivosGrid').innerHTML=atractivos.map((a,i)=>`
+        <button onclick="abrirDetalle(${i})" class="group text-left bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-100 hover:shadow-2xl hover:-translate-y-1 transition focus:outline-none focus:ring-4 focus:ring-emerald-300">
+          <div class="relative h-52 overflow-hidden">
+            <img src="${thumb(a.videos[0][0])}" alt="${esc(a.title)}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+            <span class="absolute top-4 left-4 ${tagColors[a.color]} text-white text-xs font-semibold px-3 py-1 rounded-lg">${a.tag}</span>
+            <span class="absolute top-4 right-4 bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded-lg"><i class="fa-brands fa-youtube"></i> ${a.videos.length} videos</span>
+            <h3 class="absolute bottom-4 left-5 right-5 text-white text-xl font-bold leading-tight">${a.title}</h3>
+          </div>
+          <div class="p-5 flex items-center justify-between gap-4">
+            <p class="text-slate-600 text-sm">${a.resumen}</p>
+            <span class="shrink-0 w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center group-hover:bg-emerald-700"><i class="fa-solid fa-arrow-right"></i></span>
+          </div>
+        </button>`).join('');
+    }
+    function abrirDetalle(i){
+      const a=atractivos[i];
+      document.getElementById('detImg').src=thumb(a.videos[0][0]).replace('hqdefault','maxresdefault');
+      document.getElementById('detImg').onerror=function(){this.onerror=null;this.src=thumb(a.videos[0][0]);};
+      document.getElementById('detImg').alt=a.title;
+      const tag=document.getElementById('detTag');tag.textContent=a.tag;tag.className=`inline-block ${tagColors[a.color]} text-xs font-semibold px-3 py-1 rounded-lg`;
+      document.getElementById('detTitle').textContent=a.title;
+      document.getElementById('detText').innerHTML=a.text.map(t=>`<p>${esc(t)}</p>`).join('');
+      document.getElementById('detFacts').innerHTML=a.facts.map(([ic,k,v])=>`<li class="flex items-start space-x-2"><i class="fa-solid ${ic} ${iconColors[a.color]} mt-1"></i><span><strong>${k}:</strong> ${esc(v)}</span></li>`).join('');
+      document.getElementById('detVideos').innerHTML=a.videos.map(([id,t])=>`
+        <div class="space-y-2">
+          <div class="relative aspect-video rounded-2xl overflow-hidden bg-slate-900" data-video="${id}">
+            <button onclick="reproducir(this.parentElement)" class="group absolute inset-0 w-full h-full" aria-label="Reproducir ${esc(t)}">
+              <img src="${thumb(id)}" alt="" loading="lazy" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition">
+              <span class="absolute inset-0 flex items-center justify-center"><span class="w-16 h-11 rounded-xl bg-red-600 group-hover:bg-red-700 flex items-center justify-center shadow-lg"><i class="fa-solid fa-play text-white text-lg"></i></span></span>
+            </button>
+          </div>
+          <div class="flex items-start justify-between gap-3">
+            <p class="text-sm font-medium text-slate-700 leading-snug">${esc(t)}</p>
+            <a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener" class="shrink-0 text-xs font-semibold text-red-600 hover:text-red-700 whitespace-nowrap"><i class="fa-brands fa-youtube"></i> Abrir en YouTube</a>
+          </div>
+        </div>`).join('');
+      document.getElementById('detLinks').innerHTML=`
+        <a href="${a.info}" target="_blank" rel="noopener" class="flex items-center justify-center space-x-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-medium py-3 rounded-xl transition"><i class="fa-solid fa-circle-info"></i><span>Más información</span></a>
+        <a href="${a.mapa}" target="_blank" rel="noopener" class="flex items-center justify-center space-x-2 border border-slate-200 hover:bg-slate-50 text-slate-700 font-medium py-3 rounded-xl transition"><i class="fa-solid fa-map-location-dot"></i><span>Cómo llegar</span></a>`;
+      const d=document.getElementById('detalle');d.classList.remove('hidden');d.firstElementChild.nextElementSibling.scrollTop=0;
+      document.body.style.overflow='hidden';
+      if(location.hash!=='#ver')history.pushState({detalle:true},'','#ver');
+    }
+    function reproducir(box){box.innerHTML=`<iframe class="absolute inset-0 w-full h-full" src="https://www.youtube-nocookie.com/embed/${box.dataset.video}?autoplay=1&rel=0" title="Video de YouTube" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;}
+    function ocultarDetalle(){document.getElementById('detalle').classList.add('hidden');document.getElementById('detVideos').innerHTML='';document.body.style.overflow='';}
+    function cerrarDetalle(){if(location.hash==='#ver')history.back();else ocultarDetalle();}
+    window.addEventListener('popstate',ocultarDetalle);
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('detalle').classList.contains('hidden'))cerrarDetalle();});
+    function downloadBrochure(){window.open('folleto.html','_blank');}
+    if(location.hash==='#ver')history.replaceState(null,'',location.pathname);
+    renderAtractivos();
+    window.addEventListener('load',()=>{loadQuestion();const qr=document.getElementById('qrcode');if(window.QRCode)new QRCode(qr,{text:'https://eclectic-gecko-671259.netlify.app/',width:150,height:150,colorDark:"#065f46",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.H});else qr.textContent='Publica la página para generar el QR.';});
+    </script>
+</body>
+</html>
