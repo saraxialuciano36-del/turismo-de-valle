@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folleto Turístico | Región de los Valles • Jujuy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --forest: #0b3d2e;
+            --emerald: #047857;
+            --sage: #e8f1ec;
+            --terracotta: #c2562b;
+            --sand: #f6efe4;
+            --ink: #1c2622;
+            --muted: #5b6b64;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        body { font-family: 'Outfit', sans-serif; color: var(--ink); background: #d9ddd9; font-size: 9.5pt; line-height: 1.45; }
+        h1, h2, h3 { font-family: 'Fraunces', serif; line-height: 1.1; }
+
+        /* Barra de herramientas (solo pantalla) */
+        .toolbar { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 14px 24px; background: var(--forest); color: #fff; font-size: 14px; }
+        .toolbar a { color: #b9e4cf; text-decoration: none; }
+        .toolbar button { font: 600 14px 'Outfit', sans-serif; background: var(--terracotta); color: #fff; border: 0; border-radius: 10px; padding: 10px 18px; cursor: pointer; }
+        .toolbar button:hover { filter: brightness(1.08); }
+        .hint { font-size: 12px; opacity: .75; }
+
+        .sheets { padding: 32px 16px 64px; overflow-x: auto; }
+        .sheet-label { width: 297mm; margin: 0 auto 8px; font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #4b5a54; }
+
+        /* Hoja A4 apaisada dividida en tres paneles */
+        .sheet { width: 297mm; height: 210mm; margin: 0 auto 36px; display: grid; grid-template-columns: repeat(3, 99mm); background: #fff; box-shadow: 0 18px 50px rgba(0,0,0,.18); overflow: hidden; }
+        .panel { position: relative; padding: 11mm 10mm; display: flex; flex-direction: column; overflow: hidden; }
+        .panel + .panel { border-left: 1px dashed rgba(0,0,0,.08); }
+
+        .eyebrow { font-size: 7pt; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 2.5mm; }
+        .panel h2 { font-size: 17pt; color: var(--forest); margin-bottom: 4mm; }
+        .panel h3 { font-size: 11pt; color: var(--forest); margin-bottom: 1.5mm; }
+        .panel p { color: var(--muted); }
+        .rule { width: 14mm; height: 1.2mm; background: var(--terracotta); border-radius: 1mm; margin-bottom: 5mm; }
+
+        /* Portada */
+        .cover { color: #fff; padding: 0; justify-content: space-between; background:
+            linear-gradient(180deg, rgba(11,61,46,.35) 0%, rgba(11,61,46,.15) 35%, rgba(11,61,46,.92) 78%),
+            url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80') center/cover; }
+        .cover .brand { display: flex; align-items: center; gap: 3mm; padding: 11mm 10mm 0; font-weight: 600; font-size: 8.5pt; letter-spacing: .08em; text-transform: uppercase; }
+        .cover .brand i { width: 9mm; height: 9mm; border-radius: 2.5mm; display: grid; place-items: center; background: var(--terracotta); font-size: 11pt; }
+        .cover .title { padding: 0 10mm 12mm; }
+        .cover .title .eyebrow { color: #f3c9a8; }
+        .cover h1 { font-size: 30pt; font-weight: 800; margin-bottom: 4mm; }
+        .cover h1 em { font-style: italic; font-weight: 500; color: #f3c9a8; }
+        .cover .title p { color: rgba(255,255,255,.85); font-size: 9.5pt; max-width: 70mm; }
+        .cover .places { display: flex; flex-wrap: wrap; gap: 1.5mm; margin-top: 5mm; }
+        .cover .places span { font-size: 7pt; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.45); border-radius: 10mm; padding: 1mm 3mm; }
+
+        /* Contraportada con QR */
+        .back { background: var(--forest); color: #fff; text-align: center; align-items: center; justify-content: center; }
+        .back .eyebrow { color: #f3c9a8; }
+        .back h2 { color: #fff; font-size: 18pt; }
+        .back p { color: rgba(255,255,255,.75); }
+        .qr-card { background: #fff; padding: 5mm; border-radius: 5mm; margin: 6mm 0 4mm; box-shadow: 0 6mm 14mm rgba(0,0,0,.25); }
+        #qrcode, #qrcode img, #qrcode canvas { width: 44mm !important; height: 44mm !important; display: block; }
+        .url { font-size: 8pt; font-weight: 600; letter-spacing: .03em; color: #b9e4cf; word-break: break-all; }
+        .back .features { margin-top: 8mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; width: 100%; }
+        .back .features div { font-size: 7pt; color: rgba(255,255,255,.8); }
+        .back .features i { display: block; font-size: 12pt; color: #f3c9a8; margin-bottom: 1.5mm; }
+        .back .footnote { position: absolute; bottom: 8mm; left: 0; right: 0; font-size: 6.5pt; color: rgba(255,255,255,.5); }
+
+        /* Panel interior de solapa: paquete */
+        .package { background: var(--sand); }
+        .tag { display: inline-block; align-self: flex-start; font-size: 7pt; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; background: var(--forest); color: #fff; border-radius: 1.5mm; padding: 1mm 2.5mm; margin-bottom: 4mm; }
+        .timeline { list-style: none; border-left: 1.5px solid rgba(194,86,43,.35); margin-left: 2mm; }
+        .timeline li { position: relative; padding: 0 0 4.5mm 5mm; }
+        .timeline li::before { content: ''; position: absolute; left: -1.6mm; top: 1mm; width: 2.8mm; height: 2.8mm; border-radius: 50%; background: var(--terracotta); border: .8mm solid var(--sand); }
+        .timeline strong { display: block; color: var(--forest); font-size: 9pt; }
+        .timeline span { color: var(--muted); font-size: 8.5pt; }
+        .includes { margin-top: auto; background: #fff; border-radius: 3mm; padding: 4mm; }
+        .includes h3 { font-size: 9.5pt; }
+        .includes ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5mm 3mm; margin-top: 2mm; }
+        .includes li { font-size: 8pt; color: var(--muted); }
+        .includes i { color: var(--emerald); margin-right: 1.2mm; }
+
+        /* Interior */
+        .photo { height: 38mm; border-radius: 3mm; margin-bottom: 5mm; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 3mm; }
+        .photo span { font-size: 7pt; font-weight: 600; color: #fff; background: rgba(0,0,0,.35); padding: .8mm 2.5mm; border-radius: 5mm; }
+        .photo.fiesta { background-image: linear-gradient(135deg, #c2562b, #e9a23b); }
+        .photo.zapla { background-image: linear-gradient(135deg, #0b3d2e, #2f8f62); }
+        .photo i { font-size: 34pt; color: rgba(255,255,255,.25); margin: auto; }
+        .facts { list-style: none; margin-top: 5mm; display: grid; gap: 2.5mm; }
+        .facts li { display: flex; gap: 2.5mm; align-items: flex-start; font-size: 8.5pt; color: var(--muted); }
+        .facts i { width: 6mm; height: 6mm; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--sage); color: var(--emerald); font-size: 7.5pt; }
+        .facts strong { color: var(--ink); }
+        .quote { margin-top: auto; border-left: 1mm solid var(--terracotta); padding: 2mm 0 2mm 4mm; font-family: 'Fraunces', serif; font-style: italic; font-size: 10pt; color: var(--forest); }
+
+        .routes { background: var(--sage); }
+        .route { background: #fff; border-radius: 3mm; padding: 3.5mm 4mm; margin-bottom: 3mm; display: flex; gap: 3mm; }
+        .route .badge { flex: none; width: 11mm; height: 11mm; border-radius: 2.5mm; background: var(--forest); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 9pt; }
+        .route h3 { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 9pt; margin-bottom: .5mm; }
+        .route p { font-size: 8pt; }
+        .dances { margin-top: auto; background: var(--forest); color: #fff; border-radius: 3mm; padding: 4mm; }
+        .dances h3 { color: #fff; font-size: 10pt; }
+        .dances p { color: rgba(255,255,255,.78); font-size: 8pt; }
+        .dances .chips { display: flex; gap: 1.5mm; margin-top: 2.5mm; flex-wrap: wrap; }
+        .dances .chips span { font-size: 7pt; font-weight: 600; background: rgba(255,255,255,.12); border-radius: 5mm; padding: .8mm 2.5mm; }
+
+        @page { size: A4 landscape; margin: 0; }
+        @media print {
+            body { background: #fff; }
+            .toolbar, .sheet-label { display: none; }
+            .sheets { padding: 0; overflow: visible; }
+            .sheet { margin: 0; box-shadow: none; page-break-after: always; break-after: page; }
+            .panel + .panel { border-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Volver al sitio</a>
+        <span class="hint">Tríptico A4 apaisado · Imprimí a doble faz (girar por el borde corto) y doblá en tres.</span>
+        <button onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir / Guardar PDF</button>
+    </div>
+
+    <div class="sheets">
+        <!-- CARA EXTERIOR: solapa interior | contraportada | portada -->
+        <div class="sheet-label">Cara exterior</div>
+        <section class="sheet">
+            <div class="panel package">
+                <div class="eyebrow">Propuesta de agencia</div>
+                <h2>Escapada a los Valles</h2>
+                <div class="rule"></div>
+                <span class="tag">2 días · 1 noche</span>
+                <ul class="timeline">
+                    <li><strong>Día 1 · Mañana</strong><span>Salida desde San Salvador de Jujuy por Ruta Nacional 9 hacia Palpalá.</span></li>
+                    <li><strong>Día 1 · Tarde</strong><span>Visita al santuario de la Virgen de Río Blanco y Paypaya y recorrido cultural.</span></li>
+                    <li><strong>Día 1 · Noche</strong><span>Cena regional y alojamiento en cabaña o posada serrana.</span></li>
+                    <li><strong>Día 2 · Jornada</strong><span>Trekking guiado por las Serranías del Zapla: Yungas, avifauna y legado minero.</span></li>
+                </ul>
+                <div class="includes">
+                    <h3>El paquete incluye</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-van-shuttle"></i>Traslados</li>
+                        <li><i class="fa-solid fa-bed"></i>Alojamiento</li>
+                        <li><i class="fa-solid fa-person-hiking"></i>Guía local</li>
+                        <li><i class="fa-solid fa-utensils"></i>Comidas típicas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="panel back">
+                <div class="eyebrow">Más información</div>
+                <h2>Escaneá y descubrí<br>los Valles</h2>
+                <p>Rutas, festividades, trivia interactiva<br>y todo el proyecto en nuestra web.</p>
+                <div class="qr-card"><div id="qrcode"></div></div>
+                <div class="url" id="siteUrl"></div>
+                <div class="features">
+                    <div><i class="fa-solid fa-map-location-dot"></i>Rutas y mapas</div>
+                    <div><i class="fa-solid fa-masks-theater"></i>Fiestas y bailes</div>
+                    <div><i class="fa-solid fa-gamepad"></i>Trivia</div>
+                </div>
+                <div class="footnote">Trabajo Práctico Escolar Integrado · Región de los Valles, Jujuy</div>
+            </div>
+
+            <div class="panel cover">
+                <div class="brand"><i class="fa-solid fa-mountain-sun"></i> Valles de Jujuy · Turismo</div>
+                <div class="title">
+                    <div class="eyebrow">Jujuy · Argentina</div>
+                    <h1>Región de<br>los <em>Valles</em></h1>
+                    <p>Fe, naturaleza y tradición a pocos kilómetros de la capital jujeña.</p>
+                    <div class="places"><span>Palpalá</span><span>Río Blanco</span><span>Serranías del Zapla</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CARA INTERIOR -->
+        <div class="sheet-label">Cara interior</div>
+        <section class="sheet">
+            <div class="panel">
+                <div class="eyebrow">Turismo religioso</div>
+                <h2>Virgen de Río Blanco y Paypaya</h2>
+                <div class="rule"></div>
+                <div class="photo fiesta"><i class="fa-solid fa-church"></i></div>
+                <p>La celebración religiosa central de la región. Cada octubre, miles de peregrinos ascienden al santuario en un acto de profunda devoción y encuentro comunitario en Palpalá.</p>
+                <ul class="facts">
+                    <li><i class="fa-solid fa-calendar"></i><span><strong>Cuándo:</strong> mes de octubre.</span></li>
+                    <li><i class="fa-solid fa-location-dot"></i><span><strong>Dónde:</strong> santuario de Río Blanco, Palpalá.</span></li>
+                    <li><i class="fa-solid fa-people-group"></i><span><strong>Vivilo:</strong> peregrinación, misa y celebración popular.</span></li>
+                </ul>
+                <div class="quote">“Una fiesta que une a todo el pueblo de los Valles.”</div>
+            </div>
+
+            <div class="panel">
+                <div class="eyebrow">Área protegida</div>
+                <h2>Serranías del Zapla</h2>
+                <div class="rule"></div>
+                <div class="photo zapla"><i class="fa-solid fa-tree"></i></div>
+                <p>Reserva Ecológica de Usos Múltiples con ecosistema de Yungas, bosques nativos, rica avifauna y un valioso legado histórico minero en las cercanías de Palpalá.</p>
+                <ul class="facts">
+                    <li><i class="fa-solid fa-person-hiking"></i><span><strong>Trekking ecológico</strong> por senderos de montaña.</span></li>
+                    <li><i class="fa-solid fa-dove"></i><span><strong>Avistaje de aves</strong> en la selva de Yungas.</span></li>
+                    <li><i class="fa-solid fa-helmet-safety"></i><span><strong>Historia minera</strong> de Altos Hornos Zapla.</span></li>
+                    <li><i class="fa-solid fa-house-chimney"></i><span><strong>Alojamiento</strong> en cabañas y posadas serranas.</span></li>
+                </ul>
+            </div>
+
+            <div class="panel routes">
+                <div class="eyebrow">Cómo llegar</div>
+                <h2>Rutas y accesos</h2>
+                <div class="rule"></div>
+                <div class="route">
+                    <div class="badge">RN 9</div>
+                    <div><h3>Ruta Nacional 9</h3><p>Conecta San Salvador de Jujuy directamente con la zona de los Valles.</p></div>
+                </div>
+                <div class="route">
+                    <div class="badge"><i class="fa-solid fa-road"></i></div>
+                    <div><h3>Acceso a Zapla</h3><p>Camino pavimentado desde Palpalá hacia los puestos de la reserva.</p></div>
+                </div>
+                <div class="route">
+                    <div class="badge"><i class="fa-solid fa-sun"></i></div>
+                    <div><h3>Recomendaciones</h3><p>Calzado de trekking, protector solar, agua y abrigo para la tarde.</p></div>
+                </div>
+                <div class="dances">
+                    <h3>Música y bailes típicos</h3>
+                    <p>Las festividades se viven al ritmo de la tradición norteña.</p>
+                    <div class="chips"><span>Carnavalito</span><span>Cuecas norteñas</span><span>Copleras</span></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+    const SITE_URL = 'https://eclectic-gecko-671259.netlify.app/';
+    document.getElementById('siteUrl').textContent = SITE_URL.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    window.addEventListener('load', () => {
+        const qr = document.getElementById('qrcode');
+        if (window.QRCode) new QRCode(qr, { text: SITE_URL, width: 512, height: 512, colorDark: '#0b3d2e', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H });
+        else qr.innerHTML = '<img alt="Código QR" src="https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=' + encodeURIComponent(SITE_URL) + '">';
+    });
+    </script>
+</body>
+</html>
